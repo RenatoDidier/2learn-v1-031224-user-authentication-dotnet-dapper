@@ -32,7 +32,7 @@ namespace Projeto.Shared.ValueObjects
             if (string.IsNullOrWhiteSpace(senha))
                 throw new InvalidSenhaException();
 
-            senha += Configuracao.Segredos.ChaveSenha;
+            senha += Configuracao.SenhaSegredos.ChaveSenhaSalt;
 
             using var algoritmo = new Rfc2898DeriveBytes(
                     senha,
@@ -55,7 +55,7 @@ namespace Projeto.Shared.ValueObjects
                 char caracterSeparacao = CaracterSeparacao
             )
         {
-            senha += Configuracao.Segredos.ChaveSenha;
+            senha += Configuracao.SenhaSegredos.ChaveSenhaSalt;
 
             var partes = hash.Split(CaracterSeparacao, 3);
 

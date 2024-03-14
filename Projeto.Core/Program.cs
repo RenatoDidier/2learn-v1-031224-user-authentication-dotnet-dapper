@@ -1,6 +1,11 @@
+using Projeto.Core.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.AdicionarBanco();
+builder.AdicionarConfiguracaoSegredos();
+builder.AdicionarConfiguracaoSendgrid();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
