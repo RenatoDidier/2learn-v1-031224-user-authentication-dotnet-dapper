@@ -1,12 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Projeto.Shared\Projeto.Shared.csproj" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.35" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <ProjectReference Include="..\Projeto.Core\Projeto.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ScriptsSqls\Procedure\" />
   </ItemGroup>
 
   <PropertyGroup>

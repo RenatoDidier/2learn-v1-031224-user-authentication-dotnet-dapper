@@ -1,4 +1,4 @@
-﻿namespace Projeto.Shared.ValueObjects.Exceptions
+﻿namespace Projeto.Core.ValueObjects.Exceptions
 {
     public class InvalidSenhaException : Exception
     {

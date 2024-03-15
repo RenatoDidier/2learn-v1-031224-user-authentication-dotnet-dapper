@@ -1,4 +1,4 @@
-﻿namespace Projeto.Shared.Models
+﻿namespace Projeto.Core.Models
 {
     public class Credencial
     {

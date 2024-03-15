@@ -1,7 +1,7 @@
 ﻿
 using System.Text.RegularExpressions;
 
-namespace Projeto.Shared.ValueObjects
+namespace Projeto.Core.ValueObjects
 {
     public partial class Email : ValueObject
     {

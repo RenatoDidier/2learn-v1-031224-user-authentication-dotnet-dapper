@@ -1,4 +1,4 @@
-﻿namespace Projeto.Shared.ValueObjects
+﻿namespace Projeto.Core.ValueObjects
 {
     public class Validacao : ValueObject
     {

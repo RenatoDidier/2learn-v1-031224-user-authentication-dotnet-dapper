@@ -1,6 +1,4 @@
-﻿using static Projeto.Shared.Configuracao.EmailSendgridConfiguracao;
-
-namespace Projeto.Shared
+﻿namespace Projeto.Core
 {
     public class Configuracao
     {

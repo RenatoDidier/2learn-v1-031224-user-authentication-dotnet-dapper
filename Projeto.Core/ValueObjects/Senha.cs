@@ -1,7 +1,7 @@
-﻿using Projeto.Shared.ValueObjects.Exceptions;
+﻿using Projeto.Core.ValueObjects.Exceptions;
 using System.Security.Cryptography;
 
-namespace Projeto.Shared.ValueObjects
+namespace Projeto.Core.ValueObjects
 {
     public class Senha : ValueObject
     {
@@ -9,6 +9,7 @@ namespace Projeto.Shared.ValueObjects
         private const int TamanhoChave = 32;
         private const int Interacoes = 10000;
         private const char CaracterSeparacao = '.';
+
         public Senha(string? textoSenha = null)
         {
             if (string.IsNullOrWhiteSpace(textoSenha))

@@ -1,6 +1,6 @@
-﻿using Projeto.Shared;
+﻿using Projeto.Core;
 
-namespace Projeto.Core.Extensions
+namespace Projeto.Api.Extensions
 {
     public static class BuilderExtension
     {

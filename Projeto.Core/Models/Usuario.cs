@@ -1,6 +1,6 @@
-﻿using Projeto.Shared.ValueObjects;
+﻿using Projeto.Core.ValueObjects;
 
-namespace Projeto.Shared.Models
+namespace Projeto.Core.Models
 {
     public class Usuario
     {
