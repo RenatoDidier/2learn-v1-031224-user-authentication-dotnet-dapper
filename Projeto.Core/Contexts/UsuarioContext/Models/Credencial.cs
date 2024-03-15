@@ -1,4 +1,4 @@
-﻿namespace Projeto.Core.Models
+﻿namespace Projeto.Core.Contexts.UsuarioContext.Models
 {
     public class Credencial
     {

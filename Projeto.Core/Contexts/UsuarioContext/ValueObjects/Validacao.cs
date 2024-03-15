@@ -1,8 +1,11 @@
-﻿namespace Projeto.Core.ValueObjects
+﻿using Projeto.Core.Contexts.CompartilhadoContext.Helpers;
+using Projeto.Core.Contexts.CompartilhadoContext.ValueObjects;
+
+namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects
 {
     public class Validacao : ValueObject
     {
-        public string Codigo { get; } = Guid.NewGuid().ToString("N")[0..6].ToUpper();
+        public string Codigo { get; } = CriadorStringAleatorio.GerarSeisCaracteres();
         public DateTime? DataLimiteValidacao { get; private set; } = DateTime.UtcNow.AddMinutes(5);
         public DateTime? DataValidacaoRealizada { get; private set; }
         public bool CodigoValidado => DataLimiteValidacao == null && DataValidacaoRealizada != null;

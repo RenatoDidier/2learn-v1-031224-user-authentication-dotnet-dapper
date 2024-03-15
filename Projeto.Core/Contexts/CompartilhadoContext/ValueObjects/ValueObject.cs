@@ -1,6 +1,6 @@
 ﻿using Flunt.Notifications;
 
-namespace Projeto.Core.ValueObjects
+namespace Projeto.Core.Contexts.CompartilhadoContext.ValueObjects
 {
     public abstract class ValueObject : Notifiable<Notification>
     {

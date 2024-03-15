@@ -1,4 +1,4 @@
-﻿namespace Projeto.Core.ValueObjects.Exceptions
+﻿namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects.Exceptions
 {
     public class InvalidSenhaException : Exception
     {
@@ -6,7 +6,7 @@
 
         public InvalidSenhaException(string mensagem = MensagemPadrao)
             : base(mensagem)
-        {        
+        {
         }
 
         public static void EnviarSeInvalido(

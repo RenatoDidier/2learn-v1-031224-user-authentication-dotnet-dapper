@@ -1,5 +1,7 @@
 ﻿
 using System.Text.RegularExpressions;
+using Projeto.Core.Contexts.CompartilhadoContext.ValueObjects;
+using Projeto.Core.Contexts.UsuarioContext.ValueObjects;
 
 namespace Projeto.Core.ValueObjects
 {
@@ -19,9 +21,18 @@ namespace Projeto.Core.ValueObjects
         }
 
         public string Endereco { get; }
-        public Validacao Validacao { get; private set; } = new ();
+        public Validacao Validacao { get; } = new ();
+
+        public static implicit operator string(Email email)
+            => email.ToString();
+
+        public static implicit operator Email(string endereco)
+            => new(endereco);
 
         [GeneratedRegex(PadraoRegex)]
         private static partial Regex EmailRegex();
+
+        public override string ToString()
+            => Endereco;
     }
 }

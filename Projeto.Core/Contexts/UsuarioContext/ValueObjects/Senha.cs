@@ -1,7 +1,9 @@
-﻿using Projeto.Core.ValueObjects.Exceptions;
+﻿using Projeto.Core.Contexts.CompartilhadoContext.Helpers;
+using Projeto.Core.Contexts.CompartilhadoContext.ValueObjects;
+using Projeto.Core.Contexts.UsuarioContext.ValueObjects.Exceptions;
 using System.Security.Cryptography;
 
-namespace Projeto.Core.ValueObjects
+namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects
 {
     public class Senha : ValueObject
     {
@@ -20,7 +22,7 @@ namespace Projeto.Core.ValueObjects
         public bool VerficacaoHash(string senhaDigitada)
             => ValidarHash(HashSenha, senhaDigitada);
         public string HashSenha { get; } = string.Empty;
-        public string CodigoReset { get; } = Guid.NewGuid().ToString("N")[0..6].ToUpper();
+        public string CodigoReset { get; } = CriadorStringAleatorio.GerarSeisCaracteres();
 
         public static string GeradorHash(
                 string senha,
