@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Projeto.Shared\Projeto.Shared.csproj" />
-    <ProjectReference Include="..\Projeto.Core\Projeto.Core.csproj" />
     <ProjectReference Include="..\Projeto.Repository\Projeto.Repository.csproj" />
+    <ProjectReference Include="..\Projeto.Core\Projeto.Core.csproj" />
+    <ProjectReference Include="..\Projeto.Api\Projeto.Api.csproj" />
   </ItemGroup>
 
 </Project>
