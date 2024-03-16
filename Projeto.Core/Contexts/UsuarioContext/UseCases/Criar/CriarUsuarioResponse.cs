@@ -2,18 +2,18 @@
 using Projeto.Core.Contexts.CompartilhadoContext.UseCases;
 using Projeto.Core.Contexts.UsuarioContext.ValueObjects;
 
-namespace Projeto.Core.Contexts.UsuarioContext
+namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
 {
-    public class Response : ResponsePadrao
+    public class CriarUsuarioResponse : ResponsePadrao
     {
-        public Response(string mensagem, int status, IEnumerable<Notification>? notificacoes = null)
+        public CriarUsuarioResponse(string mensagem, int status, IEnumerable<Notification>? notificacoes = null)
         {
             Mensagem = mensagem;
             Status = status;
             Notificacoes = notificacoes;
         }
 
-        public Response(string mensagem, RespostaUsuario dados)
+        public CriarUsuarioResponse(string mensagem, RespostaUsuario dados)
         {
             Mensagem = mensagem;
             Status = 201;

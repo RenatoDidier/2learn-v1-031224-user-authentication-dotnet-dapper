@@ -5,22 +5,24 @@ using Projeto.Core.Contexts.UsuarioContext.UseCases.Criar.Contratos;
 using Projeto.Core.Contexts.UsuarioContext.ValueObjects;
 using Projeto.Core.ValueObjects;
 
-namespace Projeto.Core.Contexts.UsuarioContext
+namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
 {
-    public class Handler : IRequestHandler<Request, Response>
+    public class CriarUsuarioRequestHandler : IRequestHandler<CriarUsuarioRequest, CriarUsuarioResponse>
     {
         private readonly IRepository _repository;
 
-        public Handler(IRepository repository)
+        public CriarUsuarioRequestHandler(IRepository repository)
         {
             _repository = repository;
         }
-        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<CriarUsuarioResponse> Handle(CriarUsuarioRequest request, CancellationToken cancellationToken)
         {
             #region 01. Validar a requisição
+
             var fastValidation = Validador.GarantirRequisicao(request);
+
             if (!fastValidation.IsValid)
-                return new Response("Requisição inválida", 400, fastValidation.Notifications);
+                return new CriarUsuarioResponse("Requisição inválida", 400, fastValidation.Notifications);
             #endregion
 
             #region 02. Criação dos Value Objects
@@ -45,11 +47,12 @@ namespace Projeto.Core.Contexts.UsuarioContext
                 var usuarioExiste = await _repository.ExisteUsuarioAsync(usuario.Email.ToString(), new CancellationToken());
 
                 if (usuarioExiste)
-                    return new Response("E-mail existente", 400);
+                    return new CriarUsuarioResponse("E-mail existente", 400);
 
-            } catch
+            }
+            catch
             {
-                return new Response("Problema para acessar o banco", 500);
+                return new CriarUsuarioResponse("Problema para acessar o banco", 500);
             }
             #endregion
 
@@ -59,18 +62,19 @@ namespace Projeto.Core.Contexts.UsuarioContext
                 var cadastroUsuario = await _repository.CriarUsuarioAsync(usuario, new CancellationToken());
 
                 if (!cadastroUsuario)
-                    return new Response("Problema para cadastrar usuário", 400);
+                    return new CriarUsuarioResponse("Problema para cadastrar usuário", 400);
 
-                return new Response("Conta criada com sucesso",
+                return new CriarUsuarioResponse("Conta criada com sucesso",
                         new RespostaUsuario(
-                            usuario.Id, 
-                            nome.EnviarNomeCompleto(), 
+                            usuario.Id,
+                            nome.EnviarNomeCompleto(),
                             usuario.Email.ToString())
                     ); ;
 
-            } catch
+            }
+            catch
             {
-                return new Response("Problema Para acessar o banco", 500);
+                return new CriarUsuarioResponse("Problema Para acessar o banco", 500);
             }
             #endregion
         }

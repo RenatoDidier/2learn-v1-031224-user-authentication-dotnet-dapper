@@ -12,6 +12,10 @@ namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects
         private const int Interacoes = 10000;
         private const char CaracterSeparacao = '.';
 
+        public Senha()
+        {
+            
+        }
         public Senha(string? textoSenha = null)
         {
             if (string.IsNullOrWhiteSpace(textoSenha))
@@ -21,8 +25,8 @@ namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects
         }
         public bool VerficacaoHash(string senhaDigitada)
             => ValidarHash(HashSenha, senhaDigitada);
-        public string HashSenha { get; } = string.Empty;
-        public string CodigoReset { get; } = CriadorStringAleatorio.GerarSeisCaracteres();
+        public string HashSenha { get; set; } = string.Empty;
+        public string CodigoReset { get; set; } = CriadorStringAleatorio.GerarSeisCaracteres();
 
         public static string GeradorHash(
                 string senha,

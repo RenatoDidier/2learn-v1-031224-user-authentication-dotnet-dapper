@@ -1,11 +1,11 @@
 ﻿using Flunt.Notifications;
 using Flunt.Validations;
 
-namespace Projeto.Core.Contexts.UsuarioContext
+namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
 {
-    public static class Validador
+    public class Validador
     {
-        public static Contract<Notification> GarantirRequisicao(Request requisicao)
+        public static Contract<Notification> GarantirRequisicao(CriarUsuarioRequest requisicao)
             => new Contract<Notification>()
                 .Requires()
                 .IsLowerOrEqualsThan(requisicao.PrimeiroNome, 100, "PrimeiroNome", "O nome precisa ter menos que 100 caracteres")

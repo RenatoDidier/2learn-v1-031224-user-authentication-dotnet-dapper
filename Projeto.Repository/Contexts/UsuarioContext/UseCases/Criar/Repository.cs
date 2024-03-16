@@ -52,8 +52,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
                     usuario.Nome.PrimeiroNome,
                     usuario.Nome.UltimoSobrenome,
                     CodigoValidacao = usuario.Email.Validacao.Codigo,
-                    LimiteValidacao = usuario.Email.Validacao.DataLimiteValidacao,
-                    ValidacaoRealizada = usuario.Email.Validacao.DataValidacaoRealizada,
+                    usuario.Email.Validacao.LimiteValidacao,
+                    usuario.Email.Validacao.ValidacaoRealizada,
                     CredenciaisId = usuario.Credencial != null ? (int) usuario.Credencial.Value : 0
                 };
 

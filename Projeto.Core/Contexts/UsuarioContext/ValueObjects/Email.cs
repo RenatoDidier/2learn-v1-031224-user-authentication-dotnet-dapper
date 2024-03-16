@@ -9,6 +9,10 @@ namespace Projeto.Core.ValueObjects
     {
         private const string PadraoRegex = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
 
+        public Email()
+        {
+            
+        }
         public Email(string endereco)
         {
             if (string.IsNullOrEmpty(endereco))
@@ -20,8 +24,8 @@ namespace Projeto.Core.ValueObjects
                 AddNotification("Endereço de e-mail", "O endereço inválido");
         }
 
-        public string Endereco { get; }
-        public Validacao Validacao { get; } = new ();
+        public string Endereco { get; set; }
+        public Validacao Validacao { get; set; } = new ();
 
         public static implicit operator string(Email email)
             => email.ToString();

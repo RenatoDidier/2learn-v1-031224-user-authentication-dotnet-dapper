@@ -1,7 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Projeto.Core.Contexts.UsuarioContext.UseCases.Criar.Contratos;
-//using Projeto.Core.Contexts.UsuarioContext;
 
 namespace Projeto.Api.Controllers;
 
@@ -9,18 +7,22 @@ namespace Projeto.Api.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IRepository _repository;
     private readonly IRequestHandler<
-        Core.Contexts.UsuarioContext.Request, 
-        Core.Contexts.UsuarioContext.Response> _handlerUsuario;
+        Core.Contexts.UsuarioContext.UseCases.Criar.CriarUsuarioRequest,
+        Core.Contexts.UsuarioContext.UseCases.Criar.CriarUsuarioResponse> _handlerCriarUsuario;    
+    private readonly IRequestHandler<
+        Core.Contexts.UsuarioContext.UseCases.ValidarConta.ValidarUsuarioRequest,
+        Core.Contexts.UsuarioContext.UseCases.ValidarConta.ValidarUsuarioResponse> _handlerValidarConta;
 
     public UserController(
-            IRepository repository,
-            IRequestHandler<Core.Contexts.UsuarioContext.Request, Core.Contexts.UsuarioContext.Response> handlerUsuario
+            IRequestHandler<Core.Contexts.UsuarioContext.UseCases.Criar.CriarUsuarioRequest,
+                Core.Contexts.UsuarioContext.UseCases.Criar.CriarUsuarioResponse> handlerCriarUsuario,
+            IRequestHandler<Core.Contexts.UsuarioContext.UseCases.ValidarConta.ValidarUsuarioRequest, 
+                Core.Contexts.UsuarioContext.UseCases.ValidarConta.ValidarUsuarioResponse> handlerValidarConta
         )
     {
-        _repository = repository;
-        _handlerUsuario = handlerUsuario;
+        _handlerCriarUsuario = handlerCriarUsuario;
+        _handlerValidarConta = handlerValidarConta;
     }
 
     [HttpGet("/")]
@@ -30,11 +32,21 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("/v1/usuario/criar")]
-    public async Task<Core.Contexts.UsuarioContext.Response> CriarUsuario(
-            [FromBody] Core.Contexts.UsuarioContext.Request request
+    public async Task<Core.Contexts.UsuarioContext.UseCases.Criar.CriarUsuarioResponse> CriarUsuario(
+            [FromBody] Core.Contexts.UsuarioContext.UseCases.Criar.CriarUsuarioRequest request
         )
     {
-        var resultado = await _handlerUsuario.Handle(request, new CancellationToken());
+        var resultado = await _handlerCriarUsuario.Handle(request, new CancellationToken());
+
+        return resultado;
+    }
+
+    [HttpPost("/v1/usuario/validar")]
+    public async Task<Core.Contexts.UsuarioContext.UseCases.ValidarConta.ValidarUsuarioResponse> ValidarUsuario(
+            [FromBody] Core.Contexts.UsuarioContext.UseCases.ValidarConta.ValidarUsuarioRequest request
+        )
+    {
+        var resultado = await _handlerValidarConta.Handle(request, new CancellationToken());
 
         return resultado;
     }
