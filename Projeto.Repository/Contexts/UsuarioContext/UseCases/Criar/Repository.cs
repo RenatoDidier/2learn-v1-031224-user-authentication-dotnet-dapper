@@ -54,7 +54,7 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
                     CodigoValidacao = usuario.Email.Validacao.Codigo,
                     usuario.Email.Validacao.LimiteValidacao,
                     usuario.Email.Validacao.ValidacaoRealizada,
-                    CredenciaisId = usuario.Credencial != null ? (int) usuario.Credencial.Value : 0
+                    CredenciaisId = usuario.Credencial != null ? (int) usuario.Credencial : 0
                 };
 
                 var resultado = await _connection.ExecuteAsync(

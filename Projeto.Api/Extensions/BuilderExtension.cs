@@ -1,6 +1,9 @@
-﻿using Projeto.Core;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Projeto.Core;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Projeto.Api.Extensions
 {
@@ -54,6 +57,25 @@ namespace Projeto.Api.Extensions
                             .AllowAnyHeader();
                 });
             });
+        }
+
+        public static void AdicionarAutenticacao(this WebApplicationBuilder builder)
+        {
+            byte[] key = Encoding.ASCII.GetBytes(Configuracao.SenhaSegredos.JwtChavePrivada);
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                }
+);
         }
     }
 }

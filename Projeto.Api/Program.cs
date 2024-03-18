@@ -6,10 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AdicionarConfiguracaoSegredos();
 builder.AdicionarConfiguracaoSendgrid();
 builder.AdicionarConfiguracaoCors();
+//Adicionando Autenticação
+builder.AdicionarAutenticacao();
 
 // Injeção de dependência
 builder.Services.AdicionarBanco();
 builder.Services.AdicionarUsuarioContext();
+builder.Services.AdicionarAutenticacaoContext();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,6 +32,7 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

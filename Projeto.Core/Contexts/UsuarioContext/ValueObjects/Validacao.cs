@@ -9,10 +9,10 @@ namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects
         {
             
         }
-        public string Codigo { get; set; } = CriadorStringAleatorio.GerarSeisCaracteres();
+        public string? Codigo { get; set; } = CriadorStringAleatorio.GerarSeisCaracteres();
         public DateTime? LimiteValidacao { get; set; } = DateTime.UtcNow.AddMinutes(5);
         public DateTime? ValidacaoRealizada { get; set; }
-        public bool CodigoValidado => LimiteValidacao == null && ValidacaoRealizada != null;
+        public bool CodigoValidado => ValidacaoRealizada != null;
 
         public void VerificacaoCodigo(string codigo)
         {

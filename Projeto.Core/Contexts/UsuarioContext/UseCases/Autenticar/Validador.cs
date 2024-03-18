@@ -5,7 +5,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar
 {
     public class Validador
     {
-        public static Contract<Notification> GarantirRequisicao(Request requisicao)
+        public static Contract<Notification> GarantirRequisicao(AutenticarUsuarioRequest requisicao)
             => new Contract<Notification>()
                 .Requires()
                 .IsEmail(requisicao.Email, "E-mail", "E-mail inválido")

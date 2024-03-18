@@ -36,7 +36,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
             #endregion
 
             #region 03. Verificar se conta já foi validada
-            if (usuario.Email.Validacao.ValidacaoRealizada != null)
+            if (usuario.Email.Validacao.CodigoValidado)
                 return new ValidarUsuarioResponse("Está conta já está validada", 401);
             #endregion
 

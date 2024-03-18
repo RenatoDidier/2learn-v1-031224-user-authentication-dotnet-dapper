@@ -67,7 +67,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
                 return new CriarUsuarioResponse("Conta criada com sucesso",
                         new RespostaUsuario(
                             usuario.Id,
-                            nome.EnviarNomeCompleto(),
+                            nome.ToString(),
                             usuario.Email.ToString())
                     ); ;
 
