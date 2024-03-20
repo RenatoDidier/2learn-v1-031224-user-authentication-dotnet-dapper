@@ -12,5 +12,8 @@ namespace Projeto.Api.Extensions
 
         public static string Email(this ClaimsPrincipal user)
             => user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? string.Empty;
+
+        public static string Credencial(this ClaimsPrincipal user)
+            => user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
     }
 }

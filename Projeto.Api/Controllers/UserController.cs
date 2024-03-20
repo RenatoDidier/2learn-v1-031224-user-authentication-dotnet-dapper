@@ -5,6 +5,7 @@ using Projeto.Api.Extensions;
 using Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar;
 using Projeto.Core.Contexts.UsuarioContext.UseCases.Criar;
 using Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta;
+using System.Security.Claims;
 
 namespace Projeto.Api.Controllers;
 
@@ -78,9 +79,32 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("/v1/blog/teste")]
+    [HttpGet("/v1/blog/principal")]
     public string TelaBlogPrincipal()
     {
-        return "Entrou";
+        return "Funcionou";
     }
+
+    [Authorize(Policy = "Convidado")]
+    [HttpGet("/v1/blog/convidado")]
+    public string TelaBlogConvidado()
+    {
+        return "Entrou - Convidado";
+    }
+
+
+    [Authorize(Policy = "Usuario")]
+    [HttpGet("/v1/blog/usuario")]
+    public string TelaBlogUsuario()
+    {
+        return "Entrou - Usuário";
+    }
+
+    [Authorize(Policy = "Administrador")]
+    [HttpGet("/v1/blog/administrador")]
+    public string TelaBlogAdministrador()
+    {
+        return "Entrou - Administrador";
+    }
+
 }

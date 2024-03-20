@@ -57,13 +57,13 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
                     CredenciaisId = usuario.Credencial != null ? (int) usuario.Credencial : 0
                 };
 
-                var resultado = await _connection.ExecuteAsync(
-                        PRC_INSERIR_USUARIO,
-                        parametros,
-                        commandType: CommandType.StoredProcedure
-                    );
+                //var resultado = await _connection.ExecuteAsync(
+                //        PRC_INSERIR_USUARIO,
+                //        parametros,
+                //        commandType: CommandType.StoredProcedure
+                //    );
 
-                return resultado > 0;
+                return false;
 
             } catch (Exception ex)
             {
