@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Projeto.Core;
 using Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -39,7 +40,9 @@ namespace Projeto.Api.Extensions
             ci.AddClaim(new Claim("Id", usuario.Id));
             ci.AddClaim(new Claim(ClaimTypes.GivenName, usuario.Nome));
             ci.AddClaim(new Claim(ClaimTypes.Name, usuario.Email));
-            ci.AddClaim(new Claim(ClaimTypes.Role, usuario.Credencial));
+
+            foreach(var credencial in usuario.Credenciais)
+                ci.AddClaim(new Claim(ClaimTypes.Role, credencial.ToString()));
 
             return ci;
 

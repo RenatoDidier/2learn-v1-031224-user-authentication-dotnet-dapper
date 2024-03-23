@@ -24,7 +24,7 @@ namespace Projeto.Core.ValueObjects
                 AddNotification("Endereço de e-mail", "O endereço inválido");
         }
 
-        public string Endereco { get; set; }
+        public string Endereco { get; set; } = string.Empty;
         public Validacao Validacao { get; set; } = new ();
 
         public static implicit operator string(Email email)

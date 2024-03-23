@@ -8,7 +8,6 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
             string UltimoSobrenome,
             string Email,
             string Senha,
-            CredencialEnum Credencial,
             CredencialEnum[] Credenciais
         ) : IRequest<CriarUsuarioResponse>;
 }

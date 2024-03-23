@@ -47,7 +47,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar
             dadosResposta.Id = usuario.Id;
             dadosResposta.Email = usuario.Email;
             dadosResposta.Nome = usuario.Nome.ToString();
-            dadosResposta.Credencial = usuario.Credencial.ToString();
+            dadosResposta.Credenciais = usuario.Credenciais.Select(u => u.Titulo).ToArray();
 
             return new AutenticarUsuarioResponse("Usuário autenticado com sucesso", dadosResposta);
             #endregion

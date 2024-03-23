@@ -42,7 +42,10 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
 
             #region 04. Verificar expiração de código
             if (usuario.Email.Validacao.LimiteValidacao < DateTime.Now)
+            {
+                await _repository.GerarNovoCodigoValidacao(request.Email, new CancellationToken());
                 return new ValidarUsuarioResponse("Código expirado", 401);
+            }
             #endregion
 
             #region 05. Verificar código

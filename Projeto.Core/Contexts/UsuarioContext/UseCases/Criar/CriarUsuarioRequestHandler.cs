@@ -36,12 +36,17 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
                 Email = email,
                 Senha = senha,
                 Nome = nome,
-                Credencial = request.Credencial
             };
+
+            var validacaoCredenciais = usuario.AdicionarCredenciais(request.Credenciais);
+
+            if (!validacaoCredenciais)
+                return new CriarUsuarioResponse("Foi passado credenciais inválidas", 400);
+            
 
             #endregion
 
-            #region 03. Validar se há esse e-mail na base
+                #region 03. Validar se há esse e-mail na base
             try
             {
                 var usuarioExiste = await _repository.ExisteUsuarioAsync(usuario.Email.ToString(), new CancellationToken());

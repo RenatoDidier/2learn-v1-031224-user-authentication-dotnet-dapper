@@ -26,12 +26,14 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Autenticar
             var sqlQuery = @"
                 SELECT 
                     u.[Id],
-                    c.[Titulo] AS Credencial,
                     u.[SenhaHash] AS HashSenha,
                     u.[PrimeiroNome],
                     u.[UltimoSobrenome],
                     u.[Email] AS Endereco,
-                    u.[ValidacaoRealizada]
+                    u.[CodigoValidacao] AS Codigo,
+                    u.[ValidacaoRealizada],
+                    u.[LimiteValidacao],
+                    c.[Titulo] AS Titulo
                 FROM
                     [usuario] u
                 INNER JOIN
@@ -44,9 +46,9 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Autenticar
 
             try
             {
-                var resultado = await _connection.QueryAsync<Usuario, Senha, Nome, Email, Validacao, Usuario?>(
+                var resultado = await _connection.QueryAsync<Usuario, Senha, Nome, Email, Validacao, Credencial, Usuario?>(
                         sqlQuery,
-                        (usuario, senha, nome, email, validacao) =>
+                        (usuario, senha, nome, email, validacao, credencial) =>
                         {
                             if (usuario != null)
                             {
@@ -54,15 +56,38 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Autenticar
                                 usuario.Nome = nome;
                                 usuario.Email = email;
                                 usuario.Email.Validacao = validacao;
+                                usuario.Credenciais = new List<Credencial>();
+
+                                usuario.Credenciais.Add(credencial);
                             }
                             return usuario;
                         },
                         parametros,
-                        splitOn: "HashSenha, PrimeiroNome, Endereco, ValidacaoRealizada"
+                        splitOn: "HashSenha, PrimeiroNome, Endereco, Codigo, Titulo"
 
                     );
+                if (resultado != null)
+                {
+                    Usuario resultadoFinal = new();
 
+                    for (var i = 0; i < resultado.Count(); i ++)
+                    {
+                        if (i == 0)
+                        {
+                            resultadoFinal.Id = resultado.FirstOrDefault().Id;
+                            resultadoFinal.Senha = resultado.FirstOrDefault().Senha;
+                            resultadoFinal.Nome = resultado.FirstOrDefault().Nome;
+                            resultadoFinal.Email = resultado.FirstOrDefault().Email;
+                            resultadoFinal.Credenciais.AddRange(resultado.FirstOrDefault().Credenciais);
+                        } else
+                        {
+                            resultadoFinal.Credenciais.AddRange(resultado.Skip(i).FirstOrDefault().Credenciais);
+                        }
+                    }
+                    return resultadoFinal;
+                }
                 return resultado.FirstOrDefault();
+
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);

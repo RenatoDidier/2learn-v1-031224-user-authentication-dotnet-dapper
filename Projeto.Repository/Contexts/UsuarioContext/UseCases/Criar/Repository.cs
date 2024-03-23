@@ -10,6 +10,7 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
     {
         private readonly string PRC_BUSCAR_USUARIO = "PRC_BUSCAR_USUARIO";
         private readonly string PRC_INSERIR_USUARIO = "PRC_INSERIR_USUARIO";
+        private readonly string PRC_INSERIR_CREDENCIAIS = "PRC_INSERIR_CREDENCIAIS";
 
         private readonly SqlConnection _connection;
         public Repository(SqlConnection connection)
@@ -44,6 +45,7 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
         {
             try
             {
+                
                 var parametros = new
                 {
                     usuario.Id,
@@ -54,16 +56,30 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
                     CodigoValidacao = usuario.Email.Validacao.Codigo,
                     usuario.Email.Validacao.LimiteValidacao,
                     usuario.Email.Validacao.ValidacaoRealizada,
-                    CredenciaisId = usuario.Credencial != null ? (int) usuario.Credencial : 0
                 };
 
-                //var resultado = await _connection.ExecuteAsync(
-                //        PRC_INSERIR_USUARIO,
-                //        parametros,
-                //        commandType: CommandType.StoredProcedure
-                //    );
+                var resultado = await _connection.ExecuteAsync(
+                        PRC_INSERIR_USUARIO,
+                        parametros,
+                        commandType: CommandType.StoredProcedure
+                    );
 
-                return false;
+                foreach (var credencial in usuario.Credenciais)
+                {
+                    var parametrosCredencial = new
+                    {
+                        UsuarioId = usuario.Id,
+                        CredenciaisId = (int) credencial.Titulo
+                    };
+
+                    await _connection.ExecuteAsync(
+                            PRC_INSERIR_CREDENCIAIS,
+                            parametrosCredencial,
+                            commandType: CommandType.StoredProcedure
+                        );
+                }
+
+                return true;
 
             } catch (Exception ex)
             {
