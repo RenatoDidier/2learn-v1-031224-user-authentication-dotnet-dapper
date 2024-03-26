@@ -16,7 +16,7 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.ValidarConta
             _connection = connection;
         }
 
-        public async Task<bool> GerarNovoCodigoValidacao(string email, CancellationToken cancellationToken)
+        public async Task<string?> GerarNovoCodigoValidacao(string email, CancellationToken cancellationToken)
         {
             var novaValidacao = new Validacao();
 
@@ -44,12 +44,12 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.ValidarConta
                     parametros
                     );
 
-                return resultado > 0;
+                return novaValidacao.Codigo;
 
             } catch ( Exception ex )
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return null;
             }
         }
 

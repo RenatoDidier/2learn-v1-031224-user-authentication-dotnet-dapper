@@ -1,6 +1,6 @@
 ﻿namespace Projeto.Api.Extensions
 {
-    public static class AuthorizationContextExtension
+    public static class AuthorizationExtension
     {
         public static void AdicionarAutorizacao(this WebApplicationBuilder builder)
         {

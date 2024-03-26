@@ -15,6 +15,11 @@ namespace Projeto.Api.Extensions
                     Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar.Contratos.IRepository,
                     Projeto.Repository.Contexts.UsuarioContext.UseCases.Autenticar.Repository
                 >();
+
+            services.AddTransient<
+                    Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta.Contratos.IService,
+                    Projeto.Repository.Contexts.UsuarioContext.UseCases.ValidarConta.Service
+                >();
         }
     }
 }

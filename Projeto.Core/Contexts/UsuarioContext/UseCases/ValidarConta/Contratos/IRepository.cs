@@ -6,6 +6,6 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta.Contratos
     {
         Task<Usuario?> ObterUsuarioPorEmailAsync(string emailRequisicao, CancellationToken cancellationToken);
         Task<bool> ValidarContaBanco(string email, CancellationToken cancellationToken);
-        Task<bool> GerarNovoCodigoValidacao(string email, CancellationToken cancellationToken);
+        Task<string?> GerarNovoCodigoValidacao(string email, CancellationToken cancellationToken);
     }
 }

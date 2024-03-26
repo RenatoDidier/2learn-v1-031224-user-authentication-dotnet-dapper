@@ -2,6 +2,7 @@
 using Projeto.Core.Contexts.CompartilhadoContext.Helpers;
 using Projeto.Core.Contexts.UsuarioContext.Models;
 using Projeto.Core.Contexts.UsuarioContext.UseCases.Criar.Contratos;
+using Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta.Contratos;
 using Projeto.Core.Contexts.UsuarioContext.ValueObjects;
 using Projeto.Core.ValueObjects;
 
@@ -9,11 +10,13 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
 {
     public class CriarUsuarioRequestHandler : IRequestHandler<CriarUsuarioRequest, CriarUsuarioResponse>
     {
-        private readonly IRepository _repository;
+        private readonly Core.Contexts.UsuarioContext.UseCases.Criar.Contratos.IRepository _repository;
+        private readonly Core.Contexts.UsuarioContext.UseCases.ValidarConta.Contratos.IService _service;
 
-        public CriarUsuarioRequestHandler(IRepository repository)
+        public CriarUsuarioRequestHandler(Core.Contexts.UsuarioContext.UseCases.Criar.Contratos.IRepository repository, Core.Contexts.UsuarioContext.UseCases.ValidarConta.Contratos.IService service)
         {
             _repository = repository;
+            _service = service;
         }
         public async Task<CriarUsuarioResponse> Handle(CriarUsuarioRequest request, CancellationToken cancellationToken)
         {
@@ -68,6 +71,8 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
 
                 if (!cadastroUsuario)
                     return new CriarUsuarioResponse("Problema para cadastrar usuário", 400);
+
+                await _service.EnviarCodigoVerificacaoEmailAsync(usuario, new CancellationToken());
 
                 return new CriarUsuarioResponse("Conta criada com sucesso",
                         new RespostaUsuario(

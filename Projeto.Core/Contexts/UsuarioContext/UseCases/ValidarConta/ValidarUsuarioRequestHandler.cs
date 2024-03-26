@@ -7,9 +7,11 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
     public class ValidarUsuarioRequestHandler : IRequestHandler<ValidarUsuarioRequest, ValidarUsuarioResponse>
     {
         private readonly IRepository _repository;
-        public ValidarUsuarioRequestHandler(IRepository repository)
+        private readonly IService _service;
+        public ValidarUsuarioRequestHandler(IRepository repository, IService service)
         {
             _repository = repository;
+            _service = service;
         }
         public async Task<ValidarUsuarioResponse> Handle(ValidarUsuarioRequest request, CancellationToken cancellationToken)
         {
@@ -43,22 +45,27 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
             #region 04. Verificar expiração de código
             if (usuario.Email.Validacao.LimiteValidacao < DateTime.Now)
             {
-                await _repository.GerarNovoCodigoValidacao(request.Email, new CancellationToken());
-                return new ValidarUsuarioResponse("Código expirado", 401);
+                var novoCodigo = await _repository.GerarNovoCodigoValidacao(request.Email, new CancellationToken());
+                if (novoCodigo == null)
+                    return new ValidarUsuarioResponse("Código expirado - Contate os responsáveis", 401);
+
+                usuario.Email.Validacao.Codigo = novoCodigo;
+
+                var envioEmail = await _service.EnviarCodigoVerificacaoEmailAsync(usuario, new CancellationToken());
+                if (envioEmail)
+                {
+                    return new ValidarUsuarioResponse("Código expirado - Foi enviado um novo código para o seu e-mail", 401);
+                } else
+                {
+                    return new ValidarUsuarioResponse("Código expirado - Contate os responsáveis", 401);
+                }
             }
             #endregion
 
             #region 05. Verificar código
             if (string.Compare(usuario.Email.Validacao.Codigo, request.CodigoVerificacao, StringComparison.CurrentCultureIgnoreCase) != 0)
             {
-                var novoCodigo = await _repository.GerarNovoCodigoValidacao(request.Email, new CancellationToken());
-                if (novoCodigo)
-                {
-                    return new ValidarUsuarioResponse("Código inválido - Um novo código foi enviado", 401);
-                } else
-                {
-                    return new ValidarUsuarioResponse("Código inválido - ERRO USINV001 - Contate o responsável", 401);
-                }
+                return new ValidarUsuarioResponse("Código inválido", 401);
             }
 
             #endregion
