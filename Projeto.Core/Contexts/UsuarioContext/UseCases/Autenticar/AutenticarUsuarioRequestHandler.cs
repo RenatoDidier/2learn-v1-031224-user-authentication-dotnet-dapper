@@ -25,25 +25,26 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar
             {
                 usuario = await _repository.ObterUsuarioCompletoPorEmailAsync(request.Email, new CancellationToken());
                 if (usuario == null)
-                    return new AutenticarUsuarioResponse("Usuário inválido", 401);
-            } catch
+                    return new AutenticarUsuarioResponse("Usuário inválido", 402);
+            }
+            catch (Exception ex)
             {
-                return new AutenticarUsuarioResponse("Problema ao consultar o banco", 500);
+                return new AutenticarUsuarioResponse($"Problema ao consultar o banco {ex.Message}", 500);
             }
             #endregion
 
             #region 03. Validar se a senha está válida
             if (!usuario.Senha.VerficacaoHash(request.Senha))
-                return new AutenticarUsuarioResponse("Usuário inválido", 401);
+                return new AutenticarUsuarioResponse($"Usuário inválido", 403);
             #endregion
 
             #region 04. Validar se a conta está ativa
             if (!usuario.Email.Validacao.CodigoValidado)
-                return new AutenticarUsuarioResponse("Conta inativada. Por favor, ative a sua conta antes de prosseguir", 401);
+                return new AutenticarUsuarioResponse("Conta inativada. Por favor, ative a sua conta antes de prosseguir", 404);
             #endregion
 
             #region 05. Retornar os dados para o usuário
-            DadosUsuarioResponse dadosResposta = new DadosUsuarioResponse();
+            DadosUsuarioResponse dadosResposta = new();
             dadosResposta.Id = usuario.Id;
             dadosResposta.Email = usuario.Email;
             dadosResposta.Nome = usuario.Nome.ToString();

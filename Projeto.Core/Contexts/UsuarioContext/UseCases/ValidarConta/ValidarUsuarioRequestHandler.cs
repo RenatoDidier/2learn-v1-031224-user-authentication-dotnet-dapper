@@ -19,7 +19,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
             var failFastValidation = Validador.GarantirRequisicao(request);
 
             if (!failFastValidation.IsValid)
-                return new ValidarUsuarioResponse("Requisição inválida", 401, failFastValidation.Notifications);
+                return new ValidarUsuarioResponse("Requisição inválida", 400, failFastValidation.Notifications);
 
             #endregion
 
@@ -31,7 +31,9 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
 
                 if (usuario == null)
                     return new ValidarUsuarioResponse("E-mail inválido", 401);
-            } catch
+
+            }
+            catch
             {
                 return new ValidarUsuarioResponse("Problema ao consultar usuário no banco", 500);
             }
@@ -39,7 +41,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
 
             #region 03. Verificar se conta já foi validada
             if (usuario.Email.Validacao.CodigoValidado)
-                return new ValidarUsuarioResponse("Está conta já está validada", 401);
+                return new ValidarUsuarioResponse("Está conta já está validada", 402);
             #endregion
 
             #region 04. Verificar expiração de código
@@ -47,25 +49,26 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
             {
                 var novoCodigo = await _repository.GerarNovoCodigoValidacao(request.Email, new CancellationToken());
                 if (novoCodigo == null)
-                    return new ValidarUsuarioResponse("Código expirado - Contate os responsáveis", 401);
+                    return new ValidarUsuarioResponse("Código expirado - Contate os responsáveis", 403);
 
                 usuario.Email.Validacao.Codigo = novoCodigo;
 
                 var envioEmail = await _service.EnviarCodigoVerificacaoEmailAsync(usuario, new CancellationToken());
                 if (envioEmail)
                 {
-                    return new ValidarUsuarioResponse("Código expirado - Foi enviado um novo código para o seu e-mail", 401);
-                } else
+                    return new ValidarUsuarioResponse("Código expirado - Foi enviado um novo código para o seu e-mail", 404);
+                }
+                else
                 {
-                    return new ValidarUsuarioResponse("Código expirado - Contate os responsáveis", 401);
+                    return new ValidarUsuarioResponse("Código expirado - Contate os responsáveis", 405);
                 }
             }
             #endregion
 
             #region 05. Verificar código
-            if (string.Compare(usuario.Email.Validacao.Codigo, request.CodigoVerificacao, StringComparison.CurrentCultureIgnoreCase) != 0)
+            if (!usuario.Email.Validacao.CompararCodigoVerificacao(request.CodigoVerificacao))
             {
-                return new ValidarUsuarioResponse("Código inválido", 401);
+                return new ValidarUsuarioResponse("Código inválido", 406);
             }
 
             #endregion
@@ -73,7 +76,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta
             #region 06. Validar conta
             var resultado = await _repository.ValidarContaBanco(request.Email, new CancellationToken());
             if (!resultado)
-                return new ValidarUsuarioResponse("Não foi possível validar a sua conta", 401);
+                return new ValidarUsuarioResponse("Não foi possível validar a sua conta", 407);
 
             return new ValidarUsuarioResponse("Conta validada com sucesso");
             #endregion
