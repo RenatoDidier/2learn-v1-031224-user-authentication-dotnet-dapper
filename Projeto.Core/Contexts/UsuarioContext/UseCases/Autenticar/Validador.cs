@@ -9,6 +9,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar
             => new Contract<Notification>()
                 .Requires()
                 .IsEmail(requisicao.Email, "E-mail", "E-mail inválido")
-                .IsGreaterOrEqualsThan(requisicao.Senha, 8, "Senha", "Senha inválida");
+                .IsGreaterOrEqualsThan(requisicao.Senha, 8, "Senha", "Senha inválida")
+                .IsLowerOrEqualsThan(requisicao.Senha, 20, "Senha", "Senha inválida");
     }
 }

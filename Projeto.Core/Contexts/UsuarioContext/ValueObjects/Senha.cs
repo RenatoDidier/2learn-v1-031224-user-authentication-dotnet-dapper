@@ -14,12 +14,16 @@ namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects
 
         public Senha()
         {
-            
+
         }
         public Senha(string? textoSenha = null)
         {
             if (string.IsNullOrWhiteSpace(textoSenha))
-                throw new InvalidSenhaException();
+                AddNotification("Senha", "Senha inválida");
+            //throw new InvalidSenhaException();
+
+            if (!string.IsNullOrWhiteSpace(textoSenha) && (textoSenha.Length <= 8 || textoSenha.Length >= 20))
+                AddNotification("Senha", "A senha deve possuir´, no mínimo, 8 caracteres e, no máximo, 20 caracteres");
 
             HashSenha = GeradorHash(textoSenha);
         }
