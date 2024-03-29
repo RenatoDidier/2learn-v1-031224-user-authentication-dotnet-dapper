@@ -1,7 +1,11 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Projeto.Core.Contexts.UsuarioContext.UseCases.Criar.Contratos;
-//using Projeto.Core.Contexts.UsuarioContext;
+using Projeto.Api.Extensions;
+using Projeto.Core.Contexts.UsuarioContext.UseCases.Autenticar;
+using Projeto.Core.Contexts.UsuarioContext.UseCases.Criar;
+using Projeto.Core.Contexts.UsuarioContext.UseCases.ValidarConta;
+using System.Security.Claims;
 
 namespace Projeto.Api.Controllers;
 
@@ -9,18 +13,28 @@ namespace Projeto.Api.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IRepository _repository;
     private readonly IRequestHandler<
-        Core.Contexts.UsuarioContext.Request, 
-        Core.Contexts.UsuarioContext.Response> _handlerUsuario;
+        CriarUsuarioRequest,
+        CriarUsuarioResponse> _handlerCriarUsuario;    
+    private readonly IRequestHandler<
+        ValidarUsuarioRequest,
+        ValidarUsuarioResponse> _handlerValidarConta;
+    private readonly IRequestHandler<
+        AutenticarUsuarioRequest,
+        AutenticarUsuarioResponse> _handlerAutenticarConta;
 
     public UserController(
-            IRepository repository,
-            IRequestHandler<Core.Contexts.UsuarioContext.Request, Core.Contexts.UsuarioContext.Response> handlerUsuario
+            IRequestHandler<CriarUsuarioRequest,
+                CriarUsuarioResponse> handlerCriarUsuario,
+            IRequestHandler<ValidarUsuarioRequest, 
+                ValidarUsuarioResponse> handlerValidarConta,
+            IRequestHandler<AutenticarUsuarioRequest,
+                AutenticarUsuarioResponse> handlerAutenticarConta
         )
     {
-        _repository = repository;
-        _handlerUsuario = handlerUsuario;
+        _handlerCriarUsuario = handlerCriarUsuario;
+        _handlerValidarConta = handlerValidarConta;
+        _handlerAutenticarConta = handlerAutenticarConta;
     }
 
     [HttpGet("/")]
@@ -30,12 +44,67 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("/v1/usuario/criar")]
-    public async Task<Core.Contexts.UsuarioContext.Response> CriarUsuario(
-            [FromBody] Core.Contexts.UsuarioContext.Request request
+    public async Task<CriarUsuarioResponse> CriarUsuario(
+            [FromBody] CriarUsuarioRequest request
         )
     {
-        var resultado = await _handlerUsuario.Handle(request, new CancellationToken());
+        var resultado = await _handlerCriarUsuario.Handle(request, new CancellationToken());
 
         return resultado;
     }
+
+    [HttpPost("/v1/usuario/validar")]
+    public async Task<ValidarUsuarioResponse> ValidarUsuario(
+            [FromBody] ValidarUsuarioRequest request
+        )
+    {
+        var resultado = await _handlerValidarConta.Handle(request, new CancellationToken());
+
+        return resultado;
+    }
+
+    [HttpPost("/v1/usuario/autenticar")]
+    public async Task<AutenticarUsuarioResponse> AutenticarUsuario(
+            [FromBody] AutenticarUsuarioRequest request
+        )
+    {
+        var resultado = await _handlerAutenticarConta.Handle(request, new CancellationToken());
+
+        if (resultado.HaErro || resultado.Dados is null)
+            return resultado;
+
+        resultado.Dados.Token = JwtTokenExtension.GerarTokenJwt(resultado.Dados);
+
+        return resultado;
+    }
+
+    [Authorize]
+    [HttpGet("/v1/blog/principal")]
+    public string TelaBlogPrincipal()
+    {
+        return "Funcionou";
+    }
+
+    [Authorize(Policy = "Convidado")]
+    [HttpGet("/v1/blog/convidado")]
+    public string TelaBlogConvidado()
+    {
+        return "Entrou - Convidado";
+    }
+
+
+    [Authorize(Policy = "Usuario")]
+    [HttpGet("/v1/blog/usuario")]
+    public string TelaBlogUsuario()
+    {
+        return "Entrou - Usuário";
+    }
+
+    [Authorize(Policy = "Administrador")]
+    [HttpGet("/v1/blog/administrador")]
+    public string TelaBlogAdministrador()
+    {
+        return "Entrou - Administrador";
+    }
+
 }

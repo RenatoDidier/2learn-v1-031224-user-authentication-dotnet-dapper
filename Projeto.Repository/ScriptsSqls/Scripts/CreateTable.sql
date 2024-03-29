@@ -17,7 +17,7 @@ CREATE TABLE [credenciais] (
 GO
 
 CREATE TABLE [usuario_credenciais] (
-  [id] int PRIMARY KEY,
+  [id] int PRIMARY KEY IDENTITY(1,1),
   [usuarioId] varchar(8),
   [credenciaisId] int,
   FOREIGN KEY ([usuarioId]) REFERENCES usuario([id]) ON DELETE CASCADE,
