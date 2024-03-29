@@ -44,18 +44,18 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
             var validacaoCredenciais = usuario.AdicionarCredenciais(request.Credenciais);
 
             if (!validacaoCredenciais)
-                return new CriarUsuarioResponse("Foi passado credenciais inválidas", 400);
-            
+                return new CriarUsuarioResponse("Foi passado credenciais inválidas", 401);
+
 
             #endregion
 
-                #region 03. Validar se há esse e-mail na base
+            #region 03. Validar se há esse e-mail na base
             try
             {
                 var usuarioExiste = await _repository.ExisteUsuarioAsync(usuario.Email.ToString(), new CancellationToken());
 
                 if (usuarioExiste)
-                    return new CriarUsuarioResponse("E-mail existente", 400);
+                    return new CriarUsuarioResponse("E-mail existente", 402);
 
             }
             catch
@@ -70,7 +70,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
                 var cadastroUsuario = await _repository.CriarUsuarioAsync(usuario, new CancellationToken());
 
                 if (!cadastroUsuario)
-                    return new CriarUsuarioResponse("Problema para cadastrar usuário", 400);
+                    return new CriarUsuarioResponse("Problema para cadastrar usuário", 403);
 
                 await _service.EnviarCodigoVerificacaoEmailAsync(usuario, new CancellationToken());
 
@@ -79,7 +79,7 @@ namespace Projeto.Core.Contexts.UsuarioContext.UseCases.Criar
                             usuario.Id,
                             nome.ToString(),
                             usuario.Email.ToString())
-                    ); ;
+                    );
 
             }
             catch

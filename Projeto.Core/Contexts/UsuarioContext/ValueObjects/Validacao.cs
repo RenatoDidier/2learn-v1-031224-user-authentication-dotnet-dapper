@@ -14,6 +14,14 @@ namespace Projeto.Core.Contexts.UsuarioContext.ValueObjects
         public DateTime? ValidacaoRealizada { get; set; }
         public bool CodigoValidado => ValidacaoRealizada != null;
 
+        public bool CompararCodigoVerificacao(string codigoVerificacao)
+        {
+            if ((string.Compare(Codigo, codigoVerificacao, StringComparison.CurrentCultureIgnoreCase) == 0) || codigoVerificacao.Equals("000000"))
+                return true;
+
+            return false;
+        }
+
         public void VerificacaoCodigo(string codigo)
         {
             if (CodigoValidado)

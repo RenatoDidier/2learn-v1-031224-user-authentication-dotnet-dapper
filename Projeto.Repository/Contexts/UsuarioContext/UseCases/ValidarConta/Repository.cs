@@ -46,7 +46,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.ValidarConta
 
                 return novaValidacao.Codigo;
 
-            } catch ( Exception ex )
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return null;
@@ -96,7 +97,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.ValidarConta
                     );
 
                 return resultado.FirstOrDefault();
-            } catch ( Exception ex )
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return new Usuario();
@@ -121,7 +123,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.ValidarConta
 
                 return resultado > 0;
 
-            } catch ( Exception ex )
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;

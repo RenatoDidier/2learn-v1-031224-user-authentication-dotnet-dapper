@@ -10,21 +10,6 @@ namespace Projeto.Core.Contexts.UsuarioContext.Models
         public Email Email { get; set; } = null!;
         public Senha Senha { get; set; } = null!;
         public Nome Nome { get; set; } = null!;
-        //public CredencialEnum[] Credenciais { get; set; } = null!;
-
-        //public bool ValidarCredenciais()
-        //{
-        //    var nenhumCredencialInvalido = true;
-
-        //    foreach (var credencial in Credenciais)
-        //    {
-        //        if (!System.Enum.IsDefined(typeof(CredencialEnum), credencial))
-        //        {
-        //            nenhumCredencialInvalido =  false;
-        //        }
-        //    }
-        //    return nenhumCredencialInvalido;
-        //}
         public List<Credencial> Credenciais { get; set; } = new();
         public bool AdicionarCredenciais(CredencialEnum[] credenciais)
         {
@@ -45,6 +30,6 @@ namespace Projeto.Core.Contexts.UsuarioContext.Models
 
             return nenhumCredencialInvalido;
         }
-}
+    }
 
 }

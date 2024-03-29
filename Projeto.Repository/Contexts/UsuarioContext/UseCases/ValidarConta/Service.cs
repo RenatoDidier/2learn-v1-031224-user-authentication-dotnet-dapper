@@ -26,7 +26,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.ValidarConta
                 Console.WriteLine(resposta);
 
                 return resposta.IsSuccessStatusCode;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;

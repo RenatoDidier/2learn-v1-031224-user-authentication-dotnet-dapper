@@ -33,7 +33,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
                     );
 
                 return resultado != null;
-            } catch ( Exception ex )
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;
@@ -45,7 +46,7 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
         {
             try
             {
-                
+
                 var parametros = new
                 {
                     usuario.Id,
@@ -69,7 +70,7 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
                     var parametrosCredencial = new
                     {
                         UsuarioId = usuario.Id,
-                        CredenciaisId = (int) credencial.Titulo
+                        CredenciaisId = (int)credencial.Titulo
                     };
 
                     await _connection.ExecuteAsync(
@@ -81,7 +82,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Criar
 
                 return true;
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;

@@ -70,7 +70,7 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Autenticar
                 {
                     Usuario resultadoFinal = new();
 
-                    for (var i = 0; i < resultado.Count(); i ++)
+                    for (var i = 0; i < resultado.Count(); i++)
                     {
                         if (i == 0)
                         {
@@ -79,7 +79,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Autenticar
                             resultadoFinal.Nome = resultado.FirstOrDefault().Nome;
                             resultadoFinal.Email = resultado.FirstOrDefault().Email;
                             resultadoFinal.Credenciais.AddRange(resultado.FirstOrDefault().Credenciais);
-                        } else
+                        }
+                        else
                         {
                             resultadoFinal.Credenciais.AddRange(resultado.Skip(i).FirstOrDefault().Credenciais);
                         }
@@ -88,7 +89,8 @@ namespace Projeto.Repository.Contexts.UsuarioContext.UseCases.Autenticar
                 }
                 return resultado.FirstOrDefault();
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return new Usuario();
